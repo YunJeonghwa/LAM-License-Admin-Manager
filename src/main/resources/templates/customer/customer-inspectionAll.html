@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:block th:replace="~{layout/layout :: layout(~{::content})}">
+<div th:fragment="content">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">유지보수 고객사</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">Inspection Customer</li>
+            </ol>
+
+        </div>
+        <div class="table-card">
+            <div class="table-header">
+                전체 고객사 현황
+            </div>
+
+            <div class="table-body">
+                <table class="custom-table">
+                    <thead>
+                    <tr>
+                        <th>고객 명</th>
+                        <th>고객 담당자</th>
+                        <th>담당자 연락처</th>
+                        <th>담당자 이메일</th>
+                        <th>점검 담당자</th>
+                        <th>점검 결과</th>
+                        <th>다음 점검일</th>
+                        <th>유지보수 만료일</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                   <tr th:each="customer : ${inspectionCustomer}">
+                        <td th:text="${customer.customerNm}"></td>
+                        <td th:text="${customer.customerManagerNm}"></td>
+                        <td th:text="${customer.customerTel}"></td>
+                        <td th:text="${customer.customerEm}"></td>
+                        <td th:text="${customer.inspectorName}"></td>
+                        <td th:text="${customer.resultStatus}"></td>
+                        <td th:text="${customer.nextInspectionDate}"></td>
+                        <td th:text="${customer.expireDate}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+</html>

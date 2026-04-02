@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.lam.domain.license.mapper.LicenseMapper">
+
+    <select id="countLicensesStatus" resultType="int" >
+        SELECT COUNT(*)
+        FROM license
+        WHERE status = #{status};
+    </select>
+
+    <select id="selectDashboardCounts" resultType="com.project.lam.domain.license.dto.LicenseDashboardDto">
+        SELECT
+            COUNT(*) AS totalLicenses,
+            COUNT(
+                    CASE WHEN status = 'ACTIVE'
+                                AND expire_date >= NOW()
+                         THEN 1
+                    END) AS activeLicenses,
+            COUNT(
+                    CASE WHEN status = 'ACTIVE'
+                            AND expire_date >= NOW()
+                            AND expire_date &lt; NOW() + INTERVAL '30 days'
+                         THEN 1
+                    END) AS expiringSoonLicenses
+        FROM license
+    </select>
+
+</mapper>

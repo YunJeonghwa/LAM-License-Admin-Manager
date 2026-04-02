@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.lam.domain.customer.mapper.CustomerMapper">
+
+    <select id="selectManagerDataList" resultType="com.project.lam.domain.customer.dto.CustomerDetailDto">
+        SELECT
+            c.CUST_NO AS customerNm,
+            c.CUST_NM AS customerNm,
+            c.BUSINESS_NO AS businessNo,
+            cm.CUST_USERNM AS managerName,
+            MAX(i.INSPECTION_DATE)::timestamp AS lastInspectionDate,
+            COALESCE(SUM(l.LICENSE_COUNT), 0) AS totalLicenseCount
+        FROM CUSTOMER c
+        LEFT JOIN CUSTOMER_MANAGER cm ON cm.CUST_NO = c.CUST_NO
+        LEFT JOIN LICENSE l ON l.CUST_NO = c.CUST_NO
+        LEFT JOIN INSPECTION i ON i.CUST_NO = c.CUST_NO
+        GROUP BY c.CUST_NO, c.CUST_NM, c.BUSINESS_NO, cm.CUST_USERNM
+    </select>
+
+    <select id="selectInspectionCount" resultType="com.project.lam.domain.customer.dto.InspectionCountDto">
+    <![CDATA[
+        SELECT
+            COUNT(
+                CASE
+                    WHEN INSPECTION_STATUS = 'SCHEDULED'
+                    AND DATE_TRUNC('month', INSPECTION_DATE)
+                         = DATE_TRUNC('month', CURRENT_DATE)
+                    THEN 1 END) AS scheduledInspectionCount,
+
+            COUNT(
+                CASE
+                    WHEN INSPECTION_STATUS = 'COMPLETED'
+                    AND DATE_TRUNC('month', INSPECTION_DATE)
+                        = DATE_TRUNC('month', CURRENT_DATE)
+                THEN 1 END) AS completedInspectionCount,
+
+        COUNT(
+            CASE
+                WHEN NEXT_INSPECTION_DATE < CURRENT_DATE
+                THEN 1 END) AS expiringLicenseCount,
+
+        COUNT(*) AS totalInspectionCount
+
+        FROM INSPECTION;
+    ]]>
+    </select>
+
+    <select id="selectManagerInspectionList" resultType="com.project.lam.domain.customer.dto.CustomerInspectionDto">
+        SELECT
+            i.INSPECTION_NO AS inspectionNo,
+            c.CUST_NO AS customerNo,
+            c.CUST_NM AS customerNm,
+            cm.CUST_USERNM AS customerManagerNM,
+            cm.CUST_TEL AS customerTel,
+            cm.CUST_EM AS customerEm,
+            i.INSPECTOR_NAME AS inspectorName,
+            i.RESULT_STATUS AS resultStatus,
+            i.NEXT_INSPECTION_DATE AS nextInspectionDate,
+            l.EXPIRE_DATE AS expiredInspectionDate
+        FROM CUSTOMER c
+        LEFT JOIN CUSTOMER_MANAGER cm
+        ON c.CUST_NO = CM.CUST_NO
+
+        LEFT JOIN (
+            SELECT DISTINCT ON (CUST_NO) *
+            FROM INSPECTION i
+            ORDER BY CUST_NO, INSPECTION_DATE DESC
+        ) i ON C.CUST_NO = i.CUST_NO
+
+        LEFT JOIN (
+        SELECT DISTINCT ON (CUST_NO) *
+        FROM LICENSE l
+        ORDER BY CUST_NO, EXPIRE_DATE DESC
+        ) l ON C.CUST_NO = l.CUST_NO
+
+        ORDER BY C.CUST_NO DESC
+
+    </select>
+
+    <select id="selectCustomerInspectionPlanList" resultType="com.project.lam.domain.customer.dto.CustomerInspectionDto">
+        SELECT
+            i.INSPECTION_NO AS inspectionNo,
+            c.CUST_NO AS customerNo,
+            c.CUST_NM AS customerNm,
+            cm.CUST_USERNM AS customerManagerNM,
+            cm.CUST_TEL AS customerTel,
+            cm.CUST_EM AS customerEm,
+            i.INSPECTOR_NAME AS inspectorName,
+            i.RESULT_STATUS AS resultStatus,
+            i.NEXT_INSPECTION_DATE AS nextInspectionDate,
+            l.EXPIRE_DATE AS expiredInspectionDate
+        FROM CUSTOMER c
+        LEFT JOIN CUSTOMER_MANAGER cm
+        ON c.CUST_NO = CM.CUST_NO
+
+        LEFT JOIN (
+            SELECT DISTINCT ON (CUST_NO) *
+            FROM INSPECTION i
+            ORDER BY CUST_NO, INSPECTION_DATE DESC
+        ) i ON C.CUST_NO = i.CUST_NO
+
+        LEFT JOIN (
+            SELECT DISTINCT ON (CUST_NO) *
+            FROM LICENSE l
+            ORDER BY CUST_NO, EXPIRE_DATE DESC
+        ) l ON C.CUST_NO = l.CUST_NO
+
+
+        ORDER BY C.CUST_NO DESC
+
+    </select>
+</mapper>

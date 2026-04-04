@@ -1,8 +1,8 @@
 package com.project.lam.domain.customer.mapper;
 
-import com.project.lam.domain.customer.dto.CustomerDetailDto;
-import com.project.lam.domain.customer.dto.CustomerInspectionDto;
-import com.project.lam.domain.customer.dto.InspectionCountDto;
+import com.project.lam.domain.customer.dto.CustomerListResponse;
+import com.project.lam.domain.customer.dto.InspectionListResponse;
+import com.project.lam.domain.customer.dto.InspectionSummaryResponse;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -10,11 +10,15 @@ import java.util.List;
 @Mapper
 public interface CustomerMapper {
 
-    List<CustomerDetailDto> selectManagerDataList();
+    // 고객 목록 조회
+    List<CustomerListResponse> selectCustomerList();
 
-    List<CustomerInspectionDto> selectManagerInspectionList();
+    // 점검 현황 목록 조회
+    List<InspectionListResponse> selectInspectionList();
 
-    InspectionCountDto selectInspectionCount();
+    // 점검 집계 조회 (대시보드)
+    InspectionSummaryResponse selectInspectionSummary();
 
-    List<CustomerInspectionDto> selectCustomerInspectionPlanList();
+    // 점검 계획 목록 조회
+    //List<InspectionPlanResponse> selectInspectionPlanList();
 }

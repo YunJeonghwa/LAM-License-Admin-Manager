@@ -1,8 +1,8 @@
 package com.project.lam.domain.customer.controller.view;
 
-import com.project.lam.domain.customer.dto.CustomerDetailDto;
-import com.project.lam.domain.customer.dto.CustomerInspectionDto;
-import com.project.lam.domain.customer.dto.InspectionCountDto;
+import com.project.lam.domain.customer.dto.CustomerListResponse;
+import com.project.lam.domain.customer.dto.InspectionListResponse;
+import com.project.lam.domain.customer.dto.InspectionSummaryResponse;
 import com.project.lam.domain.customer.service.CustomerService;
 import com.project.lam.domain.license.dto.LicenseDashboardDto;
 import com.project.lam.domain.license.service.LicenseService;
@@ -26,7 +26,7 @@ public class CustomerViewController {
     public String CustomerDetail(Model model){
 
         // 전체 유지보수 고객사 정보 조회
-        List<CustomerDetailDto> customerData = customerService.getCustomerData();
+        List<CustomerListResponse> customerData = customerService.getCustomerList();
         model.addAttribute("customerData",customerData);
 
         // dashboard 상단 라이선스 수량 조회
@@ -34,7 +34,7 @@ public class CustomerViewController {
         model.addAttribute("dashboard", dashboard);
 
         // 정기점검 고객사 수량 조회
-        InspectionCountDto inspectionCount = customerService.getInspectionCount();
+        InspectionSummaryResponse inspectionCount = customerService.getInspectionSummary();
         model.addAttribute("inspectionCount",inspectionCount);
 
         System.out.println(inspectionCount);
@@ -45,7 +45,7 @@ public class CustomerViewController {
     @GetMapping("/inspectionAll")
     public String customerInspectionAll(Model model){
 
-        List<CustomerInspectionDto> inspectionCustomer = customerService.getInspectionListData();
+        List<InspectionListResponse> inspectionCustomer = customerService.getInspectionList();
         model.addAttribute("inspectionCustomer",inspectionCustomer);
         System.out.println(inspectionCustomer);
         return "customer/customer-inspectionAll";
@@ -54,8 +54,8 @@ public class CustomerViewController {
     @GetMapping("/monthInspection")
     public String customerMonthInspection(Model model){
 
-       // List<CustomerInspectionDto> monthInspection = customerService.getInspectionListData();
-        List<CustomerInspectionDto> monthInspection = customerService.getMonthInspection();
+       // List<CustomerInspectionDto> monthInspection = customerService.getInspectionPlanList();
+        List<InspectionListResponse> monthInspection = customerService.getInspectionList();
         model.addAttribute("monthInspection",monthInspection);
 
         return "customer/customer-inspectionMonth";

@@ -5,14 +5,14 @@
 
 <mapper namespace="com.project.lam.domain.customer.mapper.CustomerMapper">
 
-    <select id="selectManagerDataList" resultType="com.project.lam.domain.customer.dto.CustomerDetailDto">
+    <select id="selectCustomerList" resultType="com.project.lam.domain.customer.dto.CustomerListResponse">
         SELECT
-            c.CUST_NO AS customerNm,
-            c.CUST_NM AS customerNm,
-            c.BUSINESS_NO AS businessNo,
-            cm.CUST_USERNM AS managerName,
-            MAX(i.INSPECTION_DATE)::timestamp AS lastInspectionDate,
-            COALESCE(SUM(l.LICENSE_COUNT), 0) AS totalLicenseCount
+        c.CUST_NO    AS customerNo,
+        c.CUST_NM    AS customerNm,
+        c.BUSINESS_NO AS businessNo,
+        cm.CUST_USERNM AS managerName,
+        MAX(i.INSPECTION_DATE)::timestamp AS lastInspectionDate,
+        COALESCE(SUM(l.LICENSE_COUNT), 0) AS totalLicenseCount
         FROM CUSTOMER c
         LEFT JOIN CUSTOMER_MANAGER cm ON cm.CUST_NO = c.CUST_NO
         LEFT JOIN LICENSE l ON l.CUST_NO = c.CUST_NO
@@ -20,7 +20,7 @@
         GROUP BY c.CUST_NO, c.CUST_NM, c.BUSINESS_NO, cm.CUST_USERNM
     </select>
 
-    <select id="selectInspectionCount" resultType="com.project.lam.domain.customer.dto.InspectionCountDto">
+    <select id="selectInspectionSummary" resultType="com.project.lam.domain.customer.dto.InspectionSummaryResponse">
     <![CDATA[
         SELECT
             COUNT(
@@ -48,7 +48,7 @@
     ]]>
     </select>
 
-    <select id="selectManagerInspectionList" resultType="com.project.lam.domain.customer.dto.CustomerInspectionDto">
+    <select id="selectInspectionList" resultType="com.project.lam.domain.customer.dto.InspectionListResponse">
         SELECT
             i.INSPECTION_NO AS inspectionNo,
             c.CUST_NO AS customerNo,
@@ -80,7 +80,7 @@
 
     </select>
 
-    <select id="selectCustomerInspectionPlanList" resultType="com.project.lam.domain.customer.dto.CustomerInspectionDto">
+    <select id="selectInspectionPlanList" resultType="com.project.lam.domain.customer.dto.InspectionListResponse">
         SELECT
             i.INSPECTION_NO AS inspectionNo,
             c.CUST_NO AS customerNo,

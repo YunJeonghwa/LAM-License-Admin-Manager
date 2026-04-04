@@ -1,10 +1,9 @@
 package com.project.lam.domain.customer.service;
 
-import com.project.lam.domain.customer.dto.CustomerDetailDto;
-import com.project.lam.domain.customer.dto.CustomerInspectionDto;
-import com.project.lam.domain.customer.dto.InspectionCountDto;
+import com.project.lam.domain.customer.dto.CustomerListResponse;
+import com.project.lam.domain.customer.dto.InspectionListResponse;
+import com.project.lam.domain.customer.dto.InspectionSummaryResponse;
 import com.project.lam.domain.customer.mapper.CustomerMapper;
-import com.project.lam.domain.manager.mapper.ManagerMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,17 +16,19 @@ public class CustomerService {
 
     private final CustomerMapper customerMapper;
 
-    public List<CustomerDetailDto> getCustomerData() {
-        return customerMapper.selectManagerDataList();
+    public List<CustomerListResponse> getCustomerList() {
+        return customerMapper.selectCustomerList();
     }
 
-    public InspectionCountDto getInspectionCount(){
-        return customerMapper.selectInspectionCount();
+    public InspectionSummaryResponse getInspectionSummary() {
+        return customerMapper.selectInspectionSummary();
     }
 
-   public List<CustomerInspectionDto> getInspectionListData(){
-        return customerMapper.selectManagerInspectionList();
+    public List<InspectionListResponse> getInspectionList() {
+        return customerMapper.selectInspectionList();
     }
 
-    public List<CustomerInspectionDto> getMonthInspection() {return customerMapper.selectCustomerInspectionPlanList();}
+    /*public List<InspectionPlanResponse> getInspectionPlanList() {
+        return customerMapper.selectInspectionPlanList();
+    }*/
 }

@@ -16,8 +16,11 @@ public class CustomerService {
 
     private final CustomerMapper customerMapper;
 
-    public List<CustomerListResponse> getCustomerList() {
-        return customerMapper.selectCustomerList();
+    public List<CustomerListResponse> getCustomerList(int  offset, int size) {
+        return customerMapper.selectCustomerList(offset,size);
+    }
+    public int getCustomerTotalCount() {
+        return customerMapper.getCustomerTotalCount();
     }
 
     public InspectionSummaryResponse getInspectionSummary() {

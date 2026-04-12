@@ -6,18 +6,35 @@
 <mapper namespace="com.project.lam.domain.customer.mapper.CustomerMapper">
 
     <select id="selectCustomerList" resultType="com.project.lam.domain.customer.dto.CustomerListResponse">
-        SELECT
-        c.CUST_NO    AS customerNo,
-        c.CUST_NM    AS customerNm,
-        c.BUSINESS_NO AS businessNo,
-        cm.CUST_USERNM AS managerName,
-        MAX(i.INSPECTION_DATE)::timestamp AS lastInspectionDate,
-        COALESCE(SUM(l.LICENSE_COUNT), 0) AS totalLicenseCount
+        SELECT *
+        FROM (
+            SELECT
+                c.CUST_NO    AS customerNo,
+                c.CUST_NM    AS customerNm,
+                c.BUSINESS_NO AS businessNo,
+                cm.CUST_USERNM AS managerName,
+                MAX(i.INSPECTION_DATE)::timestamp AS lastInspectionDate,
+                COALESCE(SUM(l.LICENSE_COUNT), 0) AS totalLicenseCount
+            FROM CUSTOMER c
+            LEFT JOIN CUSTOMER_MANAGER cm ON cm.CUST_NO = c.CUST_NO
+            LEFT JOIN LICENSE l ON l.CUST_NO = c.CUST_NO
+            LEFT JOIN INSPECTION i ON i.CUST_NO = c.CUST_NO
+            GROUP BY c.CUST_NO, c.CUST_NM, c.BUSINESS_NO, cm.CUST_USERNM
+        ) t
+        ORDER BY t.customerNo DESC
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <select id="getCustomerTotalCount" resultType="int">
+        SELECT COUNT(*)
+        FROM (
+        SELECT c.CUST_NO
         FROM CUSTOMER c
         LEFT JOIN CUSTOMER_MANAGER cm ON cm.CUST_NO = c.CUST_NO
         LEFT JOIN LICENSE l ON l.CUST_NO = c.CUST_NO
         LEFT JOIN INSPECTION i ON i.CUST_NO = c.CUST_NO
         GROUP BY c.CUST_NO, c.CUST_NM, c.BUSINESS_NO, cm.CUST_USERNM
+        ) t
     </select>
 
     <select id="selectInspectionSummary" resultType="com.project.lam.domain.customer.dto.InspectionSummaryResponse">

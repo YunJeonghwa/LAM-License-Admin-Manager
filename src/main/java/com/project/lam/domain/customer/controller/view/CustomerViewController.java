@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -23,11 +24,23 @@ public class CustomerViewController {
     private final LicenseService licenseService;
 
     @GetMapping("/detail")
-    public String CustomerDetail(Model model){
+    public String CustomerDetail(@RequestParam(defaultValue = "0") int page, Model model){
+
+        //고객사 조회 테이블 페이징
+        int size = 10; // 페이지당 10개
+        int offset = page * size;
 
         // 전체 유지보수 고객사 정보 조회
-        List<CustomerListResponse> customerData = customerService.getCustomerList();
+        List<CustomerListResponse> customerData = customerService.getCustomerList(offset,size);
+
+        //전체 개수
+        int totalCount = customerService.getCustomerTotalCount();
+        int totalPages = (int) Math.ceil((double) totalCount / size);
+
         model.addAttribute("customerData",customerData);
+        model.addAttribute("totalCount", totalCount);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
 
         // dashboard 상단 라이선스 수량 조회
         LicenseDashboardDto dashboard = licenseService.getDashboardCounts();

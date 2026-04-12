@@ -151,10 +151,20 @@
                 전체 고객사 현황
             </div>
 
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <div>
+                    총 고객사 수:
+                    <span th:text="${totalCount}">0</span> 건
+                </div>
+            </div>
+
             <div class="table-body">
                 <table class="custom-table">
                     <thead>
                     <tr>
+                        <th class="text-center" style="width: 50px;">
+                            <input class="form-check-input" type="checkbox" id="selectAll">
+                        </th>
                         <th>고객명</th>
                         <th>사업자번호</th>
                         <th>고객 담당자</th>
@@ -165,6 +175,11 @@
                     </thead>
                     <tbody>
                     <tr th:each="customer : ${customerData}">
+                        <td class="text-center">
+                            <input class="form-check-input customer-checkbox"
+                                   type="checkbox"
+                                   th:value="${customer.customerNo}">
+                        </td>
                         <td th:text="${customer.customerNm}"></td>
                         <td th:text="${customer.businessNo}"></td>
                         <td th:text="${customer.managerName}"></td>
@@ -182,6 +197,37 @@
                     </tr>
                     </tbody>
                 </table>
+            </div>
+            <!-- 페이징 -->
+            <div class="d-flex justify-content-between align-items-center mt-3">
+
+                <!-- 전체 개수 -->
+                <div>
+                    총 <span th:text="${totalCount}">0</span> 건
+                </div>
+
+                <!-- 페이지 -->
+                <ul class="pagination mb-0">
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/customer/detail(page=${currentPage - 1})}">이전</a>
+                    </li>
+
+                    <li class="page-item"
+                        th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                        th:classappend="${i == currentPage} ? 'active'">
+                        <a class="page-link"
+                           th:href="@{/customer/detail(page=${i})}"
+                           th:text="${i + 1}"></a>
+                    </li>
+
+                    <li class="page-item"
+                        th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/customer/detail(page=${currentPage + 1})}">다음</a>
+                    </li>
+                </ul>
+
             </div>
         </div>
     </div>

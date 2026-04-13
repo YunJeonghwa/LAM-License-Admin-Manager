@@ -14,7 +14,14 @@
                 c.BUSINESS_NO AS businessNo,
                 cm.CUST_USERNM AS managerName,
                 MAX(i.INSPECTION_DATE)::timestamp AS lastInspectionDate,
-                COALESCE(SUM(l.LICENSE_COUNT), 0) AS totalLicenseCount
+                COALESCE(SUM(l.LICENSE_COUNT), 0) AS totalLicenseCount,
+                (
+                    SELECT i2.RESULT_STATUS
+                    FROM INSPECTION i2
+                    WHERE i2.CUST_NO = c.CUST_NO
+                    ORDER BY i2.INSPECTION_DATE DESC
+                    LIMIT 1
+                ) AS resultStatus
             FROM CUSTOMER c
             LEFT JOIN CUSTOMER_MANAGER cm ON cm.CUST_NO = c.CUST_NO
             LEFT JOIN LICENSE l ON l.CUST_NO = c.CUST_NO

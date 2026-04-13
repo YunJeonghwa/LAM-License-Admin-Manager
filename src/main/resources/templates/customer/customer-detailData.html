@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:block th:replace="~{layout/layout :: layout(~{::content})}">
+<div th:fragment="content">
+    <div class="container-fluid mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3><strong>[[${customer.customerNm}]]</strong> 상세 정보 <button class="btn btn-outline-secondary btn-sm ms-2">뒤로가기</button></h3>
+            <div>
+                <button class="btn btn-success me-2">점검 결과 등록</button>
+                <button class="btn btn-dark" th:onclick="|location.href='/customer/edit/' + ${customer.customerNo}|">정보 수정</button>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="card text-white bg-primary h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">기본 정보</h5>
+                        <p class="card-text mb-1">사업자번호: [[${customer.businessNo}]]</p>
+                        <p class="card-text mb-1">담당자: [[${customer.managerName}]]</p>
+                        <p class="card-text">연락처: [[${customer.managerPhone}]]</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-warning h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">최근 점검 결과</h5>
+                        <p class="card-text mb-1">점검일: [[${customer.lastInspectionDate}]]</p>
+                        <p class="card-text">상태: <span class="badge bg-success">점검완료 (정상)</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-primary h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">라이선스 현황</h5>
+                        <p class="card-text mb-1">구매 수량: [[${customer.totalLicenseCount}]]개</p>
+                        <p class="card-text">만료 예정: [[${customer.expiryDate}]]</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-danger h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">특이사항/이력</h5>
+                        <p class="card-text">[[${customer.memo != null ? customer.memo : '특이사항 없음'}]]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-white"><strong>[[${customer.customerNm}]] 점검 이력</strong></div>
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                    <tr>
+                        <th>번호</th>
+                        <th>점검일자</th>
+                        <th>담당자</th>
+                        <th>점검 상태</th>
+                        <th>결과 보고서</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item, stat : ${historyList}">
+                        <td th:text="${stat.count}">1</td>
+                        <td th:text="${item.inspectionDate}">2026-01-28</td>
+                        <td th:text="${item.inspectorName}">최성민</td>
+                        <td><span th:class="${item.status == '완료' ? 'badge bg-success' : 'badge bg-danger'}" th:text="${item.status}">완료</span></td>
+                        <td><a href="#" class="btn btn-sm btn-outline-primary">[PDF 보기]</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+</html>

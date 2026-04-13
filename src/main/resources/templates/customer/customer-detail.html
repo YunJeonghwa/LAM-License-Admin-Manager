@@ -108,54 +108,16 @@
         </main>
 
     <div class="card mb-4">
-       <!-- <div class="card-header">
-            <i class="fas fa-table me-1"></i>
-            전체 고객사 현황
-        </div>
-        <div class="card-body">
-            <table id="datatablesSimple">
-                <thead>
-                <tr>
-                    <th>고객명</th>
-                    <th>사업자번호</th>
-                    <th>고객 담당자</th>
-                    <th>최근 점검일</th>
-                    <th>구매 라이선스 수량</th>
-                    <th>상세보기</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="customer : ${customerData}">
-                    <td th:text="${customer.customerNm}"></td>
-                    <td th:text="${customer.businessNo}"></td>
-                    <td th:text="${customer.managerName}"></td>
-                    &lt;!&ndash;<td th:text="${#temporals.format(customerData.lastInspectionDate, 'yyyy-MM-dd')}"></td>&ndash;&gt;
-                    <td th:text="${customer.lastInspectionDate != null
-                         ? #temporals.format(customer.lastInspectionDate, 'yyyy-MM-dd')
-                         : '-'}">
-                    </td>
-
-                    <td th:text="${customer.totalLicenseCount}"></td>
-                    <td>
-                        <a th:href="@{/customer/detail/{id}(id=${customer.customerNo})}">
-                        상세보기
-                        </a>
-                    </td>
-                </tr>
-
-                </tbody>
-            </table>
-        </div>-->
         <div class="table-card">
             <div class="table-header">
                 전체 고객사 현황
             </div>
 
             <div class="d-flex justify-content-between align-items-center mb-2">
-                <div>
+            <!--    <div>
                     총 고객사 수:
                     <span th:text="${totalCount}">0</span> 건
-                </div>
+                </div>-->
             </div>
 
             <div class="table-body">
@@ -169,6 +131,7 @@
                         <th>사업자번호</th>
                         <th>고객 담당자</th>
                         <th>최근 점검일</th>
+                        <th>점검 상태</th>
                         <th>구매 라이선스 수량</th>
                         <th>상세보기</th>
                     </tr>
@@ -187,6 +150,17 @@
                      ? #temporals.format(customer.lastInspectionDate, 'yyyy-MM-dd')
                      : '-'}">
                         </td>
+                        <td>
+                            <span class="badge"
+                                  th:text="
+                                    ${customer.resultStatus == 'NORMAL'} ? '점검완료' :
+                                    (${customer.resultStatus == 'ACTION_REQUIRED'} ? '점검 예정' : '미실시')"
+                                  th:classappend="
+                                    ${customer.resultStatus == 'NORMAL'} ? 'bg-success' :
+                                    (${customer.resultStatus == 'ACTION_REQUIRED'} ? 'bg-danger' : 'bg-secondary')
+                            ">
+                            </span>
+                        </td>
                         <td th:text="${customer.totalLicenseCount}"></td>
                         <td>
                             <a class="detail-btn"
@@ -203,7 +177,7 @@
 
                 <!-- 전체 개수 -->
                 <div>
-                    총 <span th:text="${totalCount}">0</span> 건
+                    총 고객사 수 <span th:text="${totalCount}">0</span> 건
                 </div>
 
                 <!-- 페이지 -->

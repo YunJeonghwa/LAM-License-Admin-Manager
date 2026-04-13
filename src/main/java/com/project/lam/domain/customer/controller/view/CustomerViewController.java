@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -53,6 +54,18 @@ public class CustomerViewController {
         System.out.println(inspectionCount);
 
         return "customer/customer-detail";
+    }
+
+    @GetMapping("/customer/detail/{custNo}")
+    public String customerDetail(@PathVariable Long custNo, Model model) {
+        // 1. 고객 기본 정보 및 라이선스 요약 조회
+        CustomerDetailResponse detail = customerService.getCustomerDetail(custNo);
+        // 2. 점검 이력 리스트 조회
+        List<InspectionHistoryDto> history = customerService.getInspectionHistory(custNo);
+
+        model.addAttribute("customer", detail);
+        model.addAttribute("historyList", history);
+        return "customer/detail";
     }
 
     @GetMapping("/inspectionAll")

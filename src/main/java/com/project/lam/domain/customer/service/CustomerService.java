@@ -1,8 +1,6 @@
 package com.project.lam.domain.customer.service;
 
-import com.project.lam.domain.customer.dto.CustomerListResponse;
-import com.project.lam.domain.customer.dto.InspectionListResponse;
-import com.project.lam.domain.customer.dto.InspectionSummaryResponse;
+import com.project.lam.domain.customer.dto.*;
 import com.project.lam.domain.customer.mapper.CustomerMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,6 +27,12 @@ public class CustomerService {
 
     public List<InspectionListResponse> getInspectionList() {
         return customerMapper.selectInspectionList();
+    }
+
+    public CustomerDetailResponse getCustomerDetail(Long custNo) { return customerMapper.selectCustomerDetailSummary(custNo);
+    }
+
+    public List<InspectionHistory> getInspectionHistory(Long custNo) { return customerMapper.selectCustomerInspectionHistory(custNo);
     }
 
     /*public List<InspectionPlanResponse> getInspectionPlanList() {

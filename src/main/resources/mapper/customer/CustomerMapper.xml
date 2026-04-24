@@ -136,4 +136,66 @@
         ORDER BY C.CUST_NO DESC
 
     </select>
+    <select id="selectCustomerDetailSummary" resultType="com.project.lam.domain.customer.dto.CustomerDetailResponse">
+        SELECT
+        c.cust_no AS customerNo,
+        c.cust_nm AS customerNm,
+        c.business_no AS businessNo,
+
+        -- 고객 담당자 (여러명일 경우 1명만)
+        cm.cust_usernm AS managerName,
+        cm.cust_tel AS managerPhone,
+
+        -- 최근 점검일
+        (
+        SELECT TO_CHAR(MAX(i.inspection_date), 'YYYY-MM-DD')
+        FROM inspection i
+        WHERE i.cust_no = c.cust_no
+        ) AS lastInspectionDate,
+
+        -- 라이선스 총 수량
+        (
+        SELECT COALESCE(SUM(l.license_count), 0)
+        FROM license l
+        WHERE l.cust_no = c.cust_no
+        ) AS totalLicenseCount,
+
+        -- 만료일 (ACTIVE만 기준)
+        (
+        SELECT TO_CHAR(MIN(l.expire_date), 'YYYY-MM-DD')
+        FROM license l
+        WHERE l.cust_no = c.cust_no
+        AND l.status = 'ACTIVE'
+        ) AS expiryDate,
+
+        -- 최근 점검 메모
+        (
+        SELECT i.memo
+        FROM inspection i
+        WHERE i.cust_no = c.cust_no
+        ORDER BY i.inspection_date DESC
+        LIMIT 1
+        ) AS memo
+
+        FROM customer c
+        LEFT JOIN customer_manager cm
+        ON cm.cust_no = c.cust_no
+        WHERE c.cust_no = #{custNo}
+        LIMIT 1;
+    </select>
+
+    <select id="selectCustomerInspectionHistory" resultType="com.project.lam.domain.customer.dto.InspectionHistory">
+        SELECT
+        TO_CHAR(i.inspection_date, 'YYYY-MM-DD') AS inspectionDate,
+        i.inspector_name AS inspectorName,
+
+        CASE
+        WHEN i.result_status = 'NORMAL' THEN '완료'
+        ELSE '미완료'
+        END AS status
+
+        FROM inspection i
+        WHERE i.cust_no = #{custNo}
+        ORDER BY i.inspection_date DESC;
+    </select>
 </mapper>

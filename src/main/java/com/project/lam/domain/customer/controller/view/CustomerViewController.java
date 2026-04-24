@@ -1,8 +1,6 @@
 package com.project.lam.domain.customer.controller.view;
 
-import com.project.lam.domain.customer.dto.CustomerListResponse;
-import com.project.lam.domain.customer.dto.InspectionListResponse;
-import com.project.lam.domain.customer.dto.InspectionSummaryResponse;
+import com.project.lam.domain.customer.dto.*;
 import com.project.lam.domain.customer.service.CustomerService;
 import com.project.lam.domain.license.dto.LicenseDashboardDto;
 import com.project.lam.domain.license.service.LicenseService;
@@ -56,16 +54,16 @@ public class CustomerViewController {
         return "customer/customer-detail";
     }
 
-    @GetMapping("/customer/detail/{custNo}")
+    @GetMapping("/detail/{custNo}")
     public String customerDetail(@PathVariable Long custNo, Model model) {
         // 1. 고객 기본 정보 및 라이선스 요약 조회
         CustomerDetailResponse detail = customerService.getCustomerDetail(custNo);
         // 2. 점검 이력 리스트 조회
-        List<InspectionHistoryDto> history = customerService.getInspectionHistory(custNo);
+        List<InspectionHistory> history = customerService.getInspectionHistory(custNo);
 
         model.addAttribute("customer", detail);
         model.addAttribute("historyList", history);
-        return "customer/detail";
+        return "customer/customer-detailData";
     }
 
     @GetMapping("/inspectionAll")

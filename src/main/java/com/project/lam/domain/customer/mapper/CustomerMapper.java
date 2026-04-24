@@ -1,8 +1,6 @@
 package com.project.lam.domain.customer.mapper;
 
-import com.project.lam.domain.customer.dto.CustomerListResponse;
-import com.project.lam.domain.customer.dto.InspectionListResponse;
-import com.project.lam.domain.customer.dto.InspectionSummaryResponse;
+import com.project.lam.domain.customer.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,6 +21,11 @@ public interface CustomerMapper {
     // 점검 집계 조회 (대시보드)
     InspectionSummaryResponse selectInspectionSummary();
 
+    // 고객사 상세 정보 조회(고객사 번호로)
+    CustomerDetailResponse selectCustomerDetailSummary(Long custNo);
+
+    // 고객사 정기점검 상세 정보 조회(고객사 번호로)
+    List<InspectionHistory> selectCustomerInspectionHistory(Long custNo);
 
 
     // 점검 계획 목록 조회

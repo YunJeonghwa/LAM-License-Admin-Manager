@@ -4,7 +4,7 @@
 <div th:fragment="content">
     <div class="container-fluid mt-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h3><strong>[[${customer.customerNm}]]</strong> 상세 정보 <button class="btn btn-outline-secondary btn-sm ms-2">뒤로가기</button></h3>
+            <h3><strong>[[${customer.customerNm}]]</strong> 상세 정보 <button class="btn btn-outline-secondary btn-sm ms-2"  th:onclick="|location.href='/customer/detail'|">뒤로가기</button></h3>
             <div>
                 <button class="btn btn-success me-2">점검 결과 등록</button>
                 <button class="btn btn-dark" th:onclick="|location.href='/customer/edit/' + ${customer.customerNo}|">정보 수정</button>
@@ -49,8 +49,8 @@
                 </div>
             </div>
         </div>
-
-        <div class="card">
+        <h3> 정기점검 이력 </h3>
+        <div class="card mb-4">
             <div class="card-header bg-white"><strong>[[${customer.customerNm}]] 점검 이력</strong></div>
             <div class="card-body">
                 <table class="table table-hover">
@@ -61,6 +61,33 @@
                         <th>담당자</th>
                         <th>점검 상태</th>
                         <th>결과 보고서</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item, stat : ${historyList}">
+                        <td th:text="${stat.count}">1</td>
+                        <td th:text="${item.inspectionDate}">2026-01-28</td>
+                        <td th:text="${item.inspectorName}">최성민</td>
+                        <td><span th:class="${item.status == '완료' ? 'badge bg-success' : 'badge bg-danger'}" th:text="${item.status}">완료</span></td>
+                        <td><a href="#" class="btn btn-sm btn-outline-primary">[PDF 보기]</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <h3> 라이선스 이력 </h3>
+        <div class="card mb-4">
+            <div class="card-header bg-white"><strong>[[${customer.customerNm}]] 라이선스 </strong></div>
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                    <tr>
+                        <th>번호</th>
+                        <th>구매 일자</th>
+                        <th>담당자</th>
+                        <th>라이선스 명</th>
+                        <th>라이선스 수량</th>
+                        <th>만료일</th>
                     </tr>
                     </thead>
                     <tbody>

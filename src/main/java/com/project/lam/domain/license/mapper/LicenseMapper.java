@@ -1,5 +1,6 @@
 package com.project.lam.domain.license.mapper;
 
+import com.project.lam.domain.license.dto.LicenseCreateDto;
 import com.project.lam.domain.license.dto.LicenseDashboardDto;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -9,4 +10,5 @@ public interface LicenseMapper {
 
     LicenseDashboardDto selectDashboardCounts();
 
+    void insertLicense(LicenseCreateDto licenseCreateDto);
 }

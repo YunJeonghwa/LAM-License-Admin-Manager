@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:block th:replace="~{layout/layout :: layout(~{::content})}">
+<div th:fragment="content">
+    <main>
+        <div th:fragment="content">
+            <main class="registration-container container-fluid px-4">
+                <form th:action="@{/customer/register}" th:object="${customerRequestDto}" method="post">
+                    <input type="hidden" name="newCustomer" value="true" />
+                    <input type="hidden" name="newManager" value="true" />
+                    <div class="page-header-alt">
+                        <div>
+                            <h2>LAM 고객사 관리 > 고객사 신규 등록</h2>
+                            <div class="breadcrumb-sub">Add Customer Form</div>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-dark-custom">등록 완료</button>
+                            <a th:href="@{/customer/detail}" class="btn btn-light-custom text-decoration-none">취소</a>
+                        </div>
+                    </div>
+
+                    <div class="row g-4">
+                        <div class="col-xl-6">
+                            <div class="info-card">
+                                <div class="card-header-title">기본 정보</div>
+                                <div class="form-group-custom">
+                                    <label class="label-custom">고객사명</label>
+                                    <input type="text" th:field="${customerRequestDto.customerCreateDto.custNm}" class="underline-input" placeholder="고객사명을 입력하세요">
+                                </div>
+                                <div class="form-group-custom">
+                                    <label class="label-custom">사업자번호</label>
+                                    <span class="text-primary me-2" style="font-size: 0.7rem;">●</span>
+                                    <input type="text" th:field="${customerRequestDto.customerCreateDto.businessNo}" class="underline-input" placeholder="000-00-00000">
+                                </div>
+                                <div class="form-group-custom">
+                                    <label class="label-custom">대표자명</label>
+                                    <input type="text" th:field="${customerRequestDto.customerCreateDto.custCeoNm}" class="underline-input">
+                                </div>
+                                <div class="form-group-custom">
+                                    <label class="label-custom">본사 주소</label>
+                                    <input type="text" th:field="${customerRequestDto.customerCreateDto.address}" class="underline-input">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6">
+                            <div class="info-card">
+                                <div class="card-header-title">고객 담당자 정보</div>
+                                <div class="form-group-custom">
+                                    <label class="label-custom">담당자 성함</label>
+                                    <input type="text" th:field="${customerRequestDto.customerManagerCreateDto.managerNm}" class="underline-input">
+                                </div>
+                                <div class="form-group-custom">
+                                    <label class="label-custom">연락처 (HP)</label>
+                                    <input type="text" th:field="${customerRequestDto.customerManagerCreateDto.managerPhone}" class="underline-input" placeholder="010-0000-0000">
+                                </div>
+                                <div class="form-group-custom">
+                                    <label class="label-custom">이메일 주소</label>
+                                    <input type="email" th:field="${customerRequestDto.customerManagerCreateDto.managerEm}" class="underline-input">
+                                </div>
+                                <div class="form-group-custom">
+                                    <label class="label-custom">직위</label>
+                                    <input type="text" th:field="${customerRequestDto.customerManagerCreateDto.managerPosition}" class="underline-input">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="info-card">
+                                <div class="card-header-title">라이선스 및 특이사항</div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group-custom">
+                                            <label class="label-custom">발행 일자</label>
+                                            <div class="d-flex align-items-center flex-grow-1">
+                                                <input type="date" th:field="${customerRequestDto.licenseCreateDto.issueDate}" class="underline-input">
+                                                <span class="mx-3 text-muted">~</span>
+                                                <input type="date" th:field="${customerRequestDto.licenseCreateDto.expireDate}" class="underline-input">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group-custom">
+                                            <label class="label-custom">라이선스 수량</label>
+                                            <input type="number" th:field="${customerRequestDto.licenseCreateDto.licenseCount}" class="underline-input" placeholder="0">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group-custom">
+                                        <label class="label-custom">라이선스 key</label>
+                                        <input type="text" th:field="${customerRequestDto.licenseCreateDto.licenseKey}" class="underline-input" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group-custom">
+                                        <label class="label-custom">라이선스 종류</label>
+                                        <input type="text" th:field="${customerRequestDto.licenseCreateDto.licenseType}" class="underline-input" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <label class="label-custom">특이사항</label>
+                                    <textarea th:field="${customerRequestDto.licenseCreateDto.licenseMemo}" class="custom-textarea" rows="4" placeholder="특이사항을 입력해 주세요."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </main>
+</div>
+</html>

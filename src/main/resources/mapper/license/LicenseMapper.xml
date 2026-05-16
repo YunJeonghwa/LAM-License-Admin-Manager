@@ -28,4 +28,9 @@
         FROM license
     </select>
 
+    <insert id="insertLicense" useGeneratedKeys="true" keyProperty="licenseNo" keyColumn="license_no">
+        INSERT INTO LICENSE (LICENSE_KEY,CUST_NO,TYPE,ISSUE_DATE,EXPIRE_DATE,LICENSE_COUNT,LICENSE_MEMO,CUST_USERNO)
+        VALUES (#{licenseKey},#{custNo},#{licenseType},#{issueDate},#{expireDate},#{licenseCount},#{licenseMemo},#{managerNo})
+    </insert>
+
 </mapper>

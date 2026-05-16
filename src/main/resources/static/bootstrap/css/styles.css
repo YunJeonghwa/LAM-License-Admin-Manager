@@ -11295,3 +11295,63 @@ body {
 .detail-btn:hover {
   background-color: #2563eb;
 }
+
+/*customer-regist*/
+/* 이미지의 미니멀한 느낌을 위한 맞춤 CSS */
+.registration-container { padding: 2rem 0; font-family: 'Noto Sans KR', sans-serif; }
+
+/* 헤더 부분 */
+.page-header-alt { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; }
+.page-header-alt h2 { font-size: 1.75rem; font-weight: 600; margin: 0; color: #333; }
+.breadcrumb-sub { font-size: 0.85rem; color: #888; }
+
+/* 카드 스타일 */
+.info-card {
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  padding: 1.5rem;
+  height: 100%;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.04);
+}
+.card-header-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  padding-left: 0.75rem;
+  border-left: 4px solid #ced4da;
+}
+
+/* 언더라인 입력창 (이미지 스타일) */
+.form-group-custom { display: flex; align-items: center; margin-bottom: 1.25rem; }
+.label-custom { width: 130px; font-weight: 500; color: #495057; font-size: 0.95rem; margin-bottom: 0; }
+
+.underline-input {
+  flex: 1;
+  border: none;
+  border-bottom: 1px solid #ced4da;
+  border-radius: 0;
+  padding: 0.375rem 0;
+  font-size: 0.95rem;
+  background: transparent;
+  transition: border-color 0.2s ease-in-out;
+}
+.underline-input:focus {
+  outline: none;
+  border-bottom: 2px solid #212529;
+}
+
+/* 텍스트 영역 */
+.custom-textarea {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #ced4da;
+  resize: none;
+  margin-top: 0.5rem;
+}
+.custom-textarea:focus { outline: none; border-bottom: 2px solid #212529; }
+
+/* 버튼 */
+.btn-dark-custom { background-color: #212529; color: #fff; border-radius: 6px; padding: 0.5rem 1.25rem; font-weight: 500; border: none; }
+.btn-dark-custom:hover { background-color: #000; color: #fff; }
+.btn-light-custom { background-color: #f8f9fa; color: #6c757d; border: 1px solid #dee2e6; border-radius: 6px; padding: 0.5rem 1.25rem; margin-left: 0.5rem; }

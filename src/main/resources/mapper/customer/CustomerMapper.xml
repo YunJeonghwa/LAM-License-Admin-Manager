@@ -35,12 +35,12 @@
     <select id="getCustomerTotalCount" resultType="int">
         SELECT COUNT(*)
         FROM (
-        SELECT c.CUST_NO
-        FROM CUSTOMER c
-        LEFT JOIN CUSTOMER_MANAGER cm ON cm.CUST_NO = c.CUST_NO
-        LEFT JOIN LICENSE l ON l.CUST_NO = c.CUST_NO
-        LEFT JOIN INSPECTION i ON i.CUST_NO = c.CUST_NO
-        GROUP BY c.CUST_NO, c.CUST_NM, c.BUSINESS_NO, cm.CUST_USERNM
+            SELECT c.CUST_NO
+            FROM CUSTOMER c
+            LEFT JOIN CUSTOMER_MANAGER cm ON cm.CUST_NO = c.CUST_NO
+            LEFT JOIN LICENSE l ON l.CUST_NO = c.CUST_NO
+            LEFT JOIN INSPECTION i ON i.CUST_NO = c.CUST_NO
+            GROUP BY c.CUST_NO, c.CUST_NM, c.BUSINESS_NO, cm.CUST_USERNM
         ) t
     </select>
 
@@ -198,4 +198,21 @@
         WHERE i.cust_no = #{custNo}
         ORDER BY i.inspection_date DESC;
     </select>
+
+    <select id="getCustomerLicenseTotalCount" resultType="int">
+        SELECT COALESCE(SUM(license_count),0)
+        FROM LICENSE
+        WHERE CUST_NO=#{custNo}
+    </select>
+
+    <insert id="insertCustomer" useGeneratedKeys="true" keyProperty="custNo" keyColumn="cust_no">
+        INSERT INTO CUSTOMER (CUST_NM,BUSINESS_NO,CUST_CEO_NM,ADDRESS)
+        VALUES (#{custNm},#{businessNo},#{custCeoNm},#{address})
+    </insert>
+
+    <insert id="insertCustomerManager" useGeneratedKeys="true" keyProperty="managerNo" keyColumn="cust_userno">
+        INSERT INTO CUSTOMER_MANAGER (CUST_USERNM,CUST_TEL,CUST_EM,CUST_POSITION,CUST_NO)
+        VALUES (#{managerNm}, #{managerPhone},#{managerEm},#{managerPosition},#{custNo})
+        RETURNING CUST_USERNO
+    </insert>
 </mapper>

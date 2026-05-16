@@ -74,6 +74,38 @@
                     </tbody>
                 </table>
             </div>
+            <!-- 페이징 -->
+            <!--<div class="d-flex justify-content-between align-items-center mt-3">
+
+                &lt;!&ndash; 전체 개수 &ndash;&gt;
+                <div>
+                    총 고객사 수 <span th:text="${totalCount}">0</span> 건
+                </div>
+
+                &lt;!&ndash; 페이지 &ndash;&gt;
+                <ul class="pagination mb-0">
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/customer/detail(page=${currentPage - 1})}">이전</a>
+                    </li>
+
+                    <li class="page-item"
+                        th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                        th:classappend="${i == currentPage} ? 'active'">
+                        <a class="page-link"
+                           th:href="@{/customer/detail(page=${i})}"
+
+                           th:text="${i + 1}"></a>
+                    </li>
+
+                    <li class="page-item"
+                        th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/customer/detail(page=${currentPage + 1})}">다음</a>
+                    </li>
+                </ul>
+
+            </div>-->
         </div>
         <h3> 라이선스 이력 </h3>
         <div class="card mb-4">
@@ -100,6 +132,37 @@
                     </tr>
                     </tbody>
                 </table>
+            </div>
+            <!-- 페이징 -->
+            <div class="d-flex justify-content-between align-items-center mt-3">
+
+                <!-- 전체 개수 -->
+                <div>
+                    총 라이선스 수 <span th:text="${totalLicenseCount}">0</span> 건
+                </div>
+
+                <!-- 페이지 -->
+               <!-- <ul class="pagination mb-0">
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/customer/detail(page=${currentPage - 1})}">이전</a>
+                    </li>
+
+                    <li class="page-item"
+                        th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                        th:classappend="${i == currentPage} ? 'active'">
+                        <a class="page-link"
+                           th:href="@{/customer/detail(page=${i})}"
+                           th:text="${i + 1}"></a>
+                    </li>
+
+                    <li class="page-item"
+                        th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/customer/detail(page=${currentPage + 1})}">다음</a>
+                    </li>
+                </ul>
+-->
             </div>
         </div>
     </div>

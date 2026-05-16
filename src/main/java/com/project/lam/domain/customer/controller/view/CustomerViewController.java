@@ -7,10 +7,7 @@ import com.project.lam.domain.license.service.LicenseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -55,15 +52,50 @@ public class CustomerViewController {
     }
 
     @GetMapping("/detail/{custNo}")
-    public String customerDetail(@PathVariable Long custNo, Model model) {
-        // 1. 고객 기본 정보 및 라이선스 요약 조회
+    public String customerDetail(@RequestParam(defaultValue = "0") int page, @PathVariable Long custNo, Model model) {
+
+        // 페이징에 필요한 변수
+        int size = 10; //한 페이지에 최대 10개
+        int offset = page * size; // 페이지 * 사이즈 => 앞의 offset 만큼 버리고 데이터 가져오기
+
+        // 페이징용
+        //int totalCount = customerService.getCustomerLicenseRowCount(); // COUNT(*)
+        //int totalPage = (int) Math.ceil((double) totalCount / size);
+
+        // 라이선스 총 수량 화면 표시(sum)
+        int totalLicenseCount = customerService.getCustomerDetailTotalCount(custNo);
+        // System.out.println("CUSTNO : " + custNo);
+
+        // 고객 기본 정보 및 라이선스 요약 조회
         CustomerDetailResponse detail = customerService.getCustomerDetail(custNo);
-        // 2. 점검 이력 리스트 조회
+        // 점검 이력 리스트 조회
         List<InspectionHistory> history = customerService.getInspectionHistory(custNo);
+
+
 
         model.addAttribute("customer", detail);
         model.addAttribute("historyList", history);
+        model.addAttribute("totalLicenseCount", totalLicenseCount);
         return "customer/customer-detailData";
+    }
+
+    @GetMapping("/register")
+    public String CustomerRegisterForm(Model model){
+
+        model.addAttribute("customerRequestDto",new CustomerRequestDto()); //라이선스 구매 고객사 등록(form)
+        return "customer/customer-register";
+    }
+
+    @PostMapping("/register")
+    public String CustomerRegisterSave(@ModelAttribute CustomerRequestDto request){
+
+        // 여기서 바로 찍어보세요!
+        System.out.println("newCustomer 값: " + request.isNewCustomer());
+        System.out.println("newManager 값: " + request.isNewManager());
+
+        customerService.customerRegisterSave(request);
+
+        return "redirect:/customer/detail";
     }
 
     @GetMapping("/inspectionAll")

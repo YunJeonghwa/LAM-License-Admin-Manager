@@ -1,4 +1,4 @@
-package com.project.lam.domain.customer.model;
+package com.project.lam.domain.customer.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
-public class CustomerModel{
+public class CustomerDto {
 
     private Long custNo;              // CUST_NO
     private String custNm;            // CUST_NM

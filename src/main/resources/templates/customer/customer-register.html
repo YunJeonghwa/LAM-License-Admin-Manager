@@ -94,8 +94,16 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group-custom">
+                                      <!--  <label class="label-custom">라이선스 종류</label>
+                                        <input type="text" th:field="${customerRequestDto.licenseCreateDto.licenseType}" class="underline-input" placeholder="">-->
                                         <label class="label-custom">라이선스 종류</label>
-                                        <input type="text" th:field="${customerRequestDto.licenseCreateDto.licenseType}" class="underline-input" placeholder="">
+                                        <select th:field="${customerRequestDto.licenseCreateDto.licenseType}" class="underline-input">
+                                            <option value="">라이선스를 선택해주세요</option>
+                                            <option th:each="type : ${licenseTypes}"
+                                                    th:value="${type.name()}"
+                                                    th:text="${type.description}">
+                                            </option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="mt-4">

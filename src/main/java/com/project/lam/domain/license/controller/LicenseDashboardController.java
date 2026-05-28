@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/manager")
 public class LicenseDashboardController {
 
-    private final LicenseService licenseService;
+   /* private final LicenseService licenseService;
 
     @GetMapping("/dashboard")
     public String dashboardView(Model model) {
@@ -23,6 +23,6 @@ public class LicenseDashboardController {
         model.addAttribute("dashboard", dashboard);
 
         return "manager/dashboard";
-    }
+    }*/
 
 }

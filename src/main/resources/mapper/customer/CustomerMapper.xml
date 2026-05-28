@@ -138,7 +138,7 @@
     </select>
     <select id="selectCustomerDetailSummary" resultType="com.project.lam.domain.customer.dto.CustomerDetailResponse">
         SELECT
-        c.cust_no AS customerNo,
+        c.cust_no AS custNo,
         c.cust_nm AS customerNm,
         c.business_no AS businessNo,
 
@@ -196,7 +196,8 @@
 
         FROM inspection i
         WHERE i.cust_no = #{custNo}
-        ORDER BY i.inspection_date DESC;
+        ORDER BY i.inspection_date DESC
+        LIMIT #{size} OFFSET #{offset};
     </select>
 
     <select id="getCustomerLicenseTotalCount" resultType="int">
@@ -215,4 +216,10 @@
         VALUES (#{managerNm}, #{managerPhone},#{managerEm},#{managerPosition},#{custNo})
         RETURNING CUST_USERNO
     </insert>
+
+    <select id="getInspectionHistoryCount" resultType="int">
+        SELECT COUNT(*)
+        FROM inspection
+        WHERE cust_no = #{custNo}
+    </select>
 </mapper>

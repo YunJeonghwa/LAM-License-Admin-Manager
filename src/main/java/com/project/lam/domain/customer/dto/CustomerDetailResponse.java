@@ -11,7 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CustomerDetailResponse {
 
-    private Long customerNo;           // 수정 버튼에서 사용
+    private Long custNo;
+   // private Long customerNo;           // 수정 버튼에서 사용
     private String customerNm;         // 고객명
 
     private String businessNo;         // 사업자번호

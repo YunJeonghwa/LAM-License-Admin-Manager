@@ -33,4 +33,32 @@
         VALUES (#{licenseKey},#{custNo},#{licenseType},#{issueDate},#{expireDate},#{licenseCount},#{licenseMemo},#{managerNo})
     </insert>
 
+
+    <select id="selectLicenseCustomerList" resultType="com.project.lam.domain.license.dto.LicenseCustomerDetailDto">
+        SELECT
+            LICENSE_KEY      AS licenseKey,
+            TYPE             AS licenseType,
+            LICENSE_COUNT    AS licenseCount,
+            STATUS           AS licenseStatus,
+            EXPIRE_DATE      AS expireDate
+        FROM LICENSE
+        WHERE CUST_NO=#{custNo}
+        ORDER BY EXPIRE_DATE DESC
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <select id="getLicenseCustomerCount" resultType="int">
+        SELECT COUNT(*)
+        FROM LICENSE
+        WHERE CUST_NO = #{custNo}
+    </select>
+
+    <select id="selectLicenseType" resultType="com.project.lam.domain.license.dto.LicenseRatioDto">
+        SELECT
+            TYPE AS licenseType,
+            COUNT(*) AS count
+        FROM LICENSE
+        WHERE TYPE IN ('STANDARD', 'PRO', 'ENTERPRISE')
+        GROUP BY TYPE
+    </select>
 </mapper>

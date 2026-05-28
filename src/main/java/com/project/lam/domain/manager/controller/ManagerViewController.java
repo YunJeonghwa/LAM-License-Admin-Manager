@@ -1,5 +1,6 @@
 package com.project.lam.domain.manager.controller;
 
+import com.project.lam.domain.license.dto.LicenseDashboardDto;
 import com.project.lam.domain.license.service.LicenseService;
 import com.project.lam.domain.manager.service.ManagerService;
 import jakarta.servlet.http.HttpSession;
@@ -16,6 +17,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ManagerViewController {
 
     private final ManagerService managerService;
+
+    private final LicenseService licenseService;
+
+    @GetMapping("/dashboard")
+    public String dashboardView(Model model) {
+
+        // dashboard 상단 라이선스 수량 조회
+        LicenseDashboardDto dashboard = licenseService.getDashboardCounts();
+        model.addAttribute("dashboard", dashboard);
+
+        return "manager/dashboard";
+    }
 
     @GetMapping("/register")
     public String managerRegister(){

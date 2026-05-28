@@ -25,14 +25,22 @@ public interface CustomerMapper {
     CustomerDetailResponse selectCustomerDetailSummary(Long custNo);
 
     // 고객사 정기점검 상세 정보 조회(고객사 번호로)
-    List<InspectionHistory> selectCustomerInspectionHistory(Long custNo);
+    List<InspectionHistory> selectCustomerInspectionHistory(
+            @Param("custNo") Long custNo,
+            @Param("size") int size,
+            @Param("offset") int offset
+    );
 
     // 특정 고객사 라이선스 전체 수량 조회
     int getCustomerLicenseTotalCount(Long custNo);
 
+    // 고객사 등록1 : 고객사등록
     void insertCustomer(CustomerCreateDto customerCreateDto);
 
+    // 고객사 등록 2 : 고객사 담당자 등록
     void insertCustomerManager(CustomerManagerCreateDto customerManagerCreateDto);
+
+    int getInspectionHistoryCount(@Param("custNo") Long custNo);
 
 
     // 점검 계획 목록 조회

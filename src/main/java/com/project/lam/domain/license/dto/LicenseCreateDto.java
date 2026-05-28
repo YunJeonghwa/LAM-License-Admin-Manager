@@ -1,5 +1,6 @@
 package com.project.lam.domain.license.dto;
 
+import com.project.lam.domain.license.enums.LicenseType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,10 @@ public class LicenseCreateDto{
     private LocalDate issueDate; //발행일
     private LocalDate expireDate; //만료일
     private int licenseCount; // 라이선스 수량
-    private String licenseType; //라이선스 종류
+    private LicenseType licenseType; // // enum 라이선스 타입
+    //private String licenseType; //라이선스 종류
     private String licenseMemo; // 특이사항
+
+
 
 }

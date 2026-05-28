@@ -36,7 +36,7 @@ public class CustomerService {
     public CustomerDetailResponse getCustomerDetail(Long custNo) { return customerMapper.selectCustomerDetailSummary(custNo);
     }
 
-    public List<InspectionHistory> getInspectionHistory(Long custNo) { return customerMapper.selectCustomerInspectionHistory(custNo);
+    public List<InspectionHistory> getInspectionHistory(Long custNo, int size, int offset) { return customerMapper.selectCustomerInspectionHistory(custNo, size, offset);
     }
 
     public int getCustomerDetailTotalCount(Long custNo) {return customerMapper.getCustomerLicenseTotalCount(custNo);
@@ -112,4 +112,7 @@ public class CustomerService {
         Long licenseNo = licenseCreateDto.getLicenseNo();*/
     }
 
+    public int getInspectionHistoryCount(Long custNo) {
+        return customerMapper.getInspectionHistoryCount(custNo);
+    }
 }

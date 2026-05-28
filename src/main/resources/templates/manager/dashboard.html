@@ -112,7 +112,9 @@
                                          <i class="fas fa-chart-area me-1"></i>
                                          월별 라이선스 동향
                                      </div>
-                                     <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                                     <div class="card-body"style="height: 400px;">
+                                         <canvas id="fluctuationChart" width="100%" height="40"></canvas>
+                                     </div>
                                  </div>
                              </div>
                              <div class="col-xl-6">
@@ -121,14 +123,16 @@
                                          <i class="fas fa-chart-bar me-1"></i>
                                          라이선스 타입별 비중
                                      </div>
-                                     <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+                                     <div class="card-body" style="height: 400px;">
+                                         <canvas id="typeRatioChart"></canvas>
+                                     </div>
                                  </div>
                              </div>
                          </div>
                          <div class="card mb-4">
                              <div class="card-header">
                                  <i class="fas fa-table me-1"></i>
-                                 고객사 License 현황
+                                 고객사 License 만료 현황
                              </div>
                              <div class="card-body">
                                  <table id="datatablesSimple">
@@ -616,6 +620,8 @@
                      </div>
                  </main>
 
+                 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                 <script defer src="/js/chart-setup.js"></script>
              </div>
-
 </html>
+

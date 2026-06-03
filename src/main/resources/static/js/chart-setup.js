@@ -2,55 +2,97 @@ console.log("🔥 JS 파일 로드됨");
 document.addEventListener('DOMContentLoaded', function() {
     console.log("🔥 DOM 로드됨");
     // -------------------------------------------------------
-    // 1. 왼쪽: 월별 라이선스 증감 현황 (양수/음수 Bar Chart)
-    // -------------------------------------------------------
-    const fluctuationCanvas = document.getElementById('fluctuationChart');
-    if (fluctuationCanvas) {
-        new Chart(fluctuationCanvas, {
-            type: 'bar',
-            data: {
-                labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월'],
-                datasets: [
-                    {
-                        label: '구매 및 연장 (+)',
-                        data: [15, 20, 35, 40, 25, 10, 50],
-                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
-                        borderRadius: 4,
+// 1. 왼쪽: 월별 라이선스 증감 현황 (Bar Chart)
+// -------------------------------------------------------
+    async function drawFluctuationChart() {
+
+        const fluctuationCanvas = document.getElementById('fluctuationChart');
+
+        // 캔버스 없으면 종료
+        if (!fluctuationCanvas) return;
+
+        try {
+            // 🔥 백엔드 API 호출
+            const response = await fetch('/api/licenseMonthly-stats');
+
+            if (!response.ok) {
+                throw new Error('서버 데이터 가져오기 실패');
+            }
+
+            const dbData = await response.json();
+
+            console.log("fluctuation data:", dbData);
+
+            // 👉 데이터 가공 (for문 스타일로!)
+            const labels = [];
+            const newData = [];
+            const expData = [];
+
+            for (let i = 0; i < dbData.length; i++) {
+                labels.push(dbData[i].month);
+                newData.push(dbData[i].newRegisterCount);   // ✅ 수정
+                expData.push(dbData[i].expirationCount);    // ✅ 수정
+            }
+
+            new Chart(fluctuationCanvas, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: '구매 및 연장 (+)',
+                            data: newData,
+                            backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                            borderRadius: 4,
+                        },
+                        {
+                            label: '미연장/이탈 (-)',
+                            data: expData,
+                            backgroundColor: 'rgba(255, 99, 132, 0.7)',
+                            borderRadius: 4,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    let value = context.raw;
+                                    return label + ': ' + Math.abs(value) + '건';
+                                }
+                            }
+                        }
                     },
-                    {
-                        label: '미연장/이탈 (-)',
-                        data: [-10, -25, -15, -30, -10, -40, -5],
-                        backgroundColor: 'rgba(255, 99, 132, 0.7)',
-                        borderRadius: 4,
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'top' },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.dataset.label || '';
-                                let value = context.raw;
-                                return label + ': ' + Math.abs(value) + '건'; // 음수를 절댓값으로 표시
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: function(context) {
+                                    if (context.tick.value === 0) {
+                                        return '#666';
+                                    }
+                                    return '#e0e0e0';
+                                },
+                                lineWidth: function(context) {
+                                    if (context.tick.value === 0) {
+                                        return 2;
+                                    }
+                                    return 1;
+                                }
                             }
                         }
                     }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: (context) => context.tick.value === 0 ? '#666' : '#e0e0e0',
-                            lineWidth: (context) => context.tick.value === 0 ? 2 : 1
-                        }
-                    }
                 }
-            }
-        });
+            });
+
+        } catch (error) {
+            console.error('차트 오류:', error);
+        }
     }
 
     // -------------------------------------------------------
@@ -127,5 +169,6 @@ document.addEventListener('DOMContentLoaded', function() {
 // 4. HTML(DOM)이 모두 로드된 후 차트 그리기 실행
    // document.addEventListener('DOMContentLoaded', drawTypeRatioChart);
     // 👉 여기서 바로 호출
+    drawFluctuationChart();
     drawTypeRatioChart();
 });

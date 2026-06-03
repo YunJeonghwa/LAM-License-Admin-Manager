@@ -61,4 +61,30 @@
         WHERE TYPE IN ('STANDARD', 'PRO', 'ENTERPRISE')
         GROUP BY TYPE
     </select>
+
+    <select id="findRawLicenseCounts" resultType="map">
+        SELECT
+            TO_CHAR(month, 'YYYY-MM') AS month,
+            SUM(new_count)    AS new_count,
+            SUM(expire_count) AS exp_count
+        FROM (
+            SELECT
+                DATE_TRUNC('month', issue_date AT TIME ZONE 'Asia/Seoul') AS month,
+                COUNT(*) AS new_count,
+                0        AS expire_count
+            FROM license
+            GROUP BY 1
+
+            UNION ALL
+
+            SELECT
+                DATE_TRUNC('month', expire_date AT TIME ZONE 'Asia/Seoul') AS month,
+                0          AS new_count,
+                COUNT(*) AS expire_count
+            FROM license
+            GROUP BY 1
+        ) t
+        GROUP BY month
+        ORDER BY month;
+    </select>
 </mapper>

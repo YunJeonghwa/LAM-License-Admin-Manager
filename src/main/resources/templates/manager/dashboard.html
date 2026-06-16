@@ -21,7 +21,7 @@
                                          </div>
 
                                          <div class="text-end">
-                                             <div class="fs-3 fw-bold" th:text="${dashboard.activeLicenses}">0</div>
+                                             <div class="fs-3 fw-bold" th:text="${dashboard.totalLicenses}">0</div>
                                              <div class="small text-white-50">Customers</div>
                                          </div>
                                      </div>
@@ -39,17 +39,17 @@
                                  <div class="card bg-primary mb-4 text-white">
                                      <div class="card-body d-flex justify-content-between align-items-center">
                                          <div>
-                                             <div class="fw-bold">전체 라이선스 수</div>
-                                             <div class="small text-white-50">Total Licenses</div>
+                                             <div class="fw-bold">신규 라이선스 수</div>
+                                             <div class="small text-white-50">New Licenses</div>
                                          </div>
 
                                          <div class="text-end">
-                                             <div class="fs-3 fw-bold" th:text="${dashboard.totalLicenses}">0</div>
+                                             <div class="fs-3 fw-bold" th:text="${dashboard.newLicenses}">0</div>
                                              <div class="small text-white-50">Licenses</div>
                                          </div>
                                      </div>
                                      <div class="card-footer d-flex align-items-center justify-content-between">
-                                         <a class="small text-white stretched-link" href="/customers">
+                                         <a class="small text-white stretched-link" href="/customer/newCustomer">
                                              View Details
                                          </a>
                                          <div class="small text-white">
@@ -59,10 +59,10 @@
                                  </div>
                              </div>
                              <div class="col-xl-3 col-md-6">
-                                 <div class="card bg-warning text-white mb-4">
+                                 <div class="card bg-primary text-white mb-4">
                                      <div class="card-body d-flex justify-content-between align-items-center">
                                          <div>
-                                             <div class="fw-bold">전체 활성 라이선스</div>
+                                             <div class="fw-bold">활성 라이선스</div>
                                              <div class="small text-white-50">Active Licenses</div>
                                          </div>
                                          <div class="text-end">
@@ -141,81 +141,70 @@
                                              <input class="form-check-input" type="checkbox" id="selectAll">
                                          </th>-->
                                      <tr>
-                                         <th>고객명</th>
                                          <th>고객번호</th>
+                                         <th>고객명</th>
                                          <th>라이선스 KEY</th>
+                                         <th>라이선스 타입</th>
                                          <th>발급날짜 </th>
                                          <th>만료날짜</th>
                                          <th>수량</th>
                                      </tr>
                                      </thead>
                                      <tbody>
-                                    <!-- <tr th:each="customer : ${customerData}">
-                                         <td class="text-center">
+                                     <tr th:each="customer : ${expiredLicenseList}">
+                                       <!--  <td class="text-center">
                                              <input class="form-check-input customer-checkbox"
                                                     type="checkbox"
                                                     th:value="${customer.customerNo}">
+                                         </td>-->
+                                         <td th:text="${customer.custNo}"></td>
+                                         <td th:text="${customer.custNm}"></td>
+                                         <td th:text="${customer.licenseKey}"></td>
+                                         <td th:text="${customer.licenseType}"></td>
+                                         <td th:text="${customer.issueDate != null
+                                                           ? #temporals.format(customer.issueDate, 'yyyy-MM-dd')  : '-'}">
                                          </td>
-                                         <td th:text="${customer.customerNm}"></td>
-                                         <td th:text="${customer.businessNo}"></td>
-                                         <td th:text="${customer.managerName}"></td>
-                                         <td th:text="${customer.lastInspectionDate != null
-                                                           ? #temporals.format(customer.lastInspectionDate, 'yyyy-MM-dd')  : '-'}">
+                                         <td th:text="${customer.expiredDate!= null
+                                                           ? #temporals.format(customer.expiredDate, 'yyyy-MM-dd')  : '-'}">
                                          </td>
-                                         <td>
-                            <span class="badge"
-                                  th:text="
-                                    ${customer.resultStatus == 'NORMAL'} ? '점검완료' :
-                                    (${customer.resultStatus == 'ACTION_REQUIRED'} ? '점검 예정' : '미실시')"
-                                  th:classappend="
-                                    ${customer.resultStatus == 'NORMAL'} ? 'bg-success' :
-                                    (${customer.resultStatus == 'ACTION_REQUIRED'} ? 'bg-danger' : 'bg-secondary')">
-                            </span>
-                                         </td>
-                                         <td th:text="${customer.totalLicenseCount}"></td>
-                                         <td>
-                                             <a class="detail-btn"
-                                                th:href="@{/customer/detail/{id}(id=${customer.customerNo})}">
-                                                 상세보기
-                                             </a>
-                                         </td>
-                                     </tr>-->
+                                         <td th:text="${customer.licenseCount}"></td>
+                                     </tr>
                                      </tbody>
                                  </table>
                              </div>
                              <!-- 페이징 -->
-                            <!-- <div class="mt-3" style="position: relative; min-height: 50px;">
+                             <div class="mt-3" style="position: relative; min-height: 50px;">
 
-                                 &lt;!&ndash; 전체 개수 &ndash;&gt;
+                                 <!-- 전체 개수 -->
                                  <div style="position: absolute; left: 0; top: 50%; transform: translateY(-50%);">
                                      총 고객사 수 <span th:text="${totalCount}" class="fw-bold">0</span> 건
                                  </div>
 
-                                 &lt;!&ndash; 페이지 &ndash;&gt;
+                                 <!-- 페이지 -->
                                  <div class="d-flex justify-content-center">
                                      <ul class="pagination mb-0">
                                          <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
                                              <a class="page-link"
-                                                th:href="@{/customer/detail(page=${currentPage - 1})}">이전</a>
+                                                th:href="@{/manager/dashboard(page=${currentPage - 1})}">이전</a>
                                          </li>
 
                                          <li class="page-item"
                                              th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
                                              th:classappend="${i == currentPage} ? 'active'">
                                              <a class="page-link"
-                                                th:href="@{/customer/detail(page=${i})}"
+                                                th:href="@{/manager/dashboard(page=${i})}"
                                                 th:text="${i + 1}"></a>
                                          </li>
 
                                          <li class="page-item"
                                              th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
                                              <a class="page-link"
-                                                th:href="@{/customer/detail(page=${currentPage + 1})}">다음</a>
+                                                th:href="@{/manager/dashboard(page=${currentPage + 1})}">다음</a>
                                          </li>
                                      </ul>
 
                                  </div>
-                             </div>-->
+                             </div>
                          </div>
                      </div>
                  </main>

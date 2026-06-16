@@ -11,6 +11,7 @@ public class LicenseDashboardDto {
 
     private int totalLicenses;        // 전체 라이선스 수
     private int activeLicenses;       // 활성 라이선스
+    private int newLicenses;           // 신규 계약 건수 (라이선스)
     private int expiringSoonLicenses; // 30일 이내 만료
 
 }

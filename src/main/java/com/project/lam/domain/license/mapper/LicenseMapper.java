@@ -1,9 +1,6 @@
 package com.project.lam.domain.license.mapper;
 
-import com.project.lam.domain.license.dto.LicenseCreateDto;
-import com.project.lam.domain.license.dto.LicenseCustomerDetailDto;
-import com.project.lam.domain.license.dto.LicenseDashboardDto;
-import com.project.lam.domain.license.dto.LicenseRatioDto;
+import com.project.lam.domain.license.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -27,4 +24,8 @@ public interface LicenseMapper {
     List<LicenseRatioDto> selectLicenseType();
 
     List<Map<String, Object>> findRawLicenseCounts();
+
+    List<LicenseListResponseDto> selectExpiredLicenseList(@Param("offset") int offset,@Param("size") int size);
+
+    int selectExpiredCounts();
 }

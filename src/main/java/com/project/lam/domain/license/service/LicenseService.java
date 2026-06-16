@@ -1,9 +1,6 @@
 package com.project.lam.domain.license.service;
 
-import com.project.lam.domain.license.dto.LicenseCustomerDetailDto;
-import com.project.lam.domain.license.dto.LicenseDashboardDto;
-import com.project.lam.domain.license.dto.LicenseMonthlyChartDto;
-import com.project.lam.domain.license.dto.LicenseRatioDto;
+import com.project.lam.domain.license.dto.*;
 import com.project.lam.domain.license.mapper.LicenseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -79,4 +76,11 @@ public class LicenseService {
         return new ArrayList<>(chartDataMap.values());
     }
 
+    public List<LicenseListResponseDto> getDashboardExpireList(int offset, int size) {
+        return licenseMapper.selectExpiredLicenseList(offset, size);
+    }
+
+    public int getExpiredTotalCount() {
+        return licenseMapper.selectExpiredCounts();
+    }
 }

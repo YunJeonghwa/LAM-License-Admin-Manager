@@ -14,11 +14,15 @@
     <select id="selectDashboardCounts" resultType="com.project.lam.domain.license.dto.LicenseDashboardDto">
         SELECT
             COUNT(*) AS totalLicenses,
-            COUNT(
-                    CASE WHEN status = 'ACTIVE'
-                                AND expire_date >= NOW()
-                         THEN 1
-                    END) AS activeLicenses,
+            COUNT(CASE WHEN EXTRACT(MONTH FROM issue_date) = EXTRACT(MONTH FROM NOW())
+                            AND EXTRACT(YEAR FROM issue_date) = EXTRACT(YEAR FROM NOW())
+                        THEN 1
+                    END) AS newLicenses,
+            SUM(
+                CASE WHEN status = 'ACTIVE'
+                    THEN LICENSE_COUNT
+                    ELSE 0
+                END) AS activeLicenses,
             COUNT(
                     CASE WHEN status = 'ACTIVE'
                             AND expire_date >= NOW()
@@ -86,5 +90,29 @@
         ) t
         GROUP BY month
         ORDER BY month;
+    </select>
+
+    <select id="selectExpiredLicenseList" resultType="com.project.lam.domain.license.dto.LicenseListResponseDto">
+        SELECT
+            c.CUST_NO AS custNo,
+            c.CUST_NM AS custNm,
+            l.LICENSE_NO AS licenseNo,
+            l.LICENSE_KEY AS licenseKey,
+            l.ISSUE_DATE AS issueDate,
+            l.EXPIRE_DATE AS expiredDate,
+            l.LICENSE_COUNT AS licenseCount,
+            l.TYPE AS licenseType
+        FROM LICENSE l
+        JOIN CUSTOMER c ON c.CUST_NO=l.CUST_NO
+        WHERE l.STATUS='EXPIRED'
+        ORDER BY EXPIRE_DATE DESC
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <select id="selectExpiredCounts" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM LICENSE
+        WHERE STATUS = 'EXPIRED'
     </select>
 </mapper>

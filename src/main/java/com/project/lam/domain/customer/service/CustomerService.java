@@ -82,34 +82,6 @@ public class CustomerService {
         System.out.println("======================");
 
         licenseMapper.insertLicense(licenseDto);
-
-       /* // 1. customer 데이터 저장
-        CustomerCreateDto customerCreateDto = request.getCustomerCreateDto();
-        customerMapper.insertCustomer(customerCreateDto);
-        Long custNo = customerCreateDto.getCustNo();
-
-        // 2. 고객 담당자 데이터 저장
-        Long managerNo;
-
-        LicenseCreateDto licenseCreateDto = request.getLicenseCreateDto();
-        if(request.isNewManager()){
-
-            licenseCreateDto manager = request.getlicenseCreateDto();
-            manager.setCustNo(custNo);
-
-            customerMapper.insertManager(customerCreateDto);
-            customerCreateDto.setManagerNo(customerCreateDto.getManagerNo());
-        }else{
-            managerNo = request.getManagerNo(); // 기존 담당자 선택
-        }
-        customerCreateDto.setCustNo(custNo);
-        customerMapper.insertCustomerManager(customerCreateDto);
-
-        // 3. 라이선스 데이터 저장
-
-        licenseCreateDto.setCustNo(custNo);
-        licenseMapper.insertLicense(licenseCreateDto);
-        Long licenseNo = licenseCreateDto.getLicenseNo();*/
     }
 
     public int getInspectionHistoryCount(Long custNo) {

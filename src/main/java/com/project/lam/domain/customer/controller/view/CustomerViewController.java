@@ -7,6 +7,7 @@ import com.project.lam.domain.license.dto.LicenseDashboardDto;
 import com.project.lam.domain.license.enums.LicenseType;
 import com.project.lam.domain.license.service.LicenseService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,9 @@ public class CustomerViewController {
     public String CustomerDetail(@RequestParam(defaultValue = "0") int page, Model model){
 
         //고객사 조회 테이블 페이징
-        int size = 10; // 페이지당 10개
+        int size = 5; // 페이지당 10개
         int offset = page * size;
+
 
         // 전체 유지보수 고객사 정보 조회
         List<CustomerListResponse> customerData = customerService.getCustomerList(offset,size);
@@ -120,9 +122,9 @@ public class CustomerViewController {
     public String CustomerRegisterSave(@ModelAttribute CustomerRequestDto request){
 
         // 여기서 바로 찍어보세요!
-        System.out.println("newCustomer 값: " + request.isNewCustomer());
+    /*    System.out.println("newCustomer 값: " + request.isNewCustomer());
         System.out.println("newManager 값: " + request.isNewManager());
-
+*/
         customerService.customerRegisterSave(request);
 
         return "redirect:/customer/detail";
@@ -146,6 +148,11 @@ public class CustomerViewController {
 
         return "customer/customer-inspectionMonth";
 
+    }
+
+    @GetMapping("/newCustomer")
+    public String newCustomerLicense(Model model){
+        return "license/new-customerlicense";
     }
 
 

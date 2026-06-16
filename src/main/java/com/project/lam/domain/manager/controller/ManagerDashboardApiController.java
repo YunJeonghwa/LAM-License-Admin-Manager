@@ -15,17 +15,15 @@ public class ManagerDashboardApiController {
 
     private final LicenseService licenseService;
 
-  /*  public ManagerDashboardApiController(LicenseService licenseService) {
-        this.licenseService = licenseService;
-    }*/
-
     // 자바스크립트에서 fetch('/api/license-stats')로 호출할 주소
+    // /manager/dashboard : 라이선스타입비중 차트api
     @GetMapping("/api/license-stats")
     public List<LicenseRatioDto> getLicenseStatistics() {
         // DB에서 데이터 조회 후 반환
         return licenseService.getLicenseType();
     }
 
+    // /manager/dashboard : 월별 라이선스 동향 차트api
     @GetMapping("/api/licenseMonthly-stats")
     public List<LicenseMonthlyChartDto> getMonthlyChart(){
         return licenseService.getLastSevenMonthStatus();
